@@ -283,6 +283,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
             return true;
         }
         if (mViewDragHelper != null) {
+            //no crash
             mViewDragHelper.processTouchEvent(event);
             // Record the velocity
             if (action == MotionEvent.ACTION_DOWN) {
