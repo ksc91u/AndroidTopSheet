@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         tt.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState, Boolean isOpening) {
-                Log.d("TAG", "newState: " + newState);
                 if (isOpening != null) {
                     Log.d("TAG", "isOpening: " + isOpening);
                 }
