@@ -149,15 +149,14 @@ public class TopSheetDialog extends AppCompatDialog {
             = new TopSheetBehavior.TopSheetCallback() {
         @Override
         public void onStateChanged(@NonNull View topSheet,
-                                   @BottomSheetBehavior.State int newState,
-                                   @Nullable Boolean isOpening) {
+                                   @BottomSheetBehavior.State int newState) {
             if (newState == TopSheetBehavior.STATE_HIDDEN) {
                 dismiss();
             }
         }
 
         @Override
-        public void onSlide(@NonNull View topSheet, float slideOffset) {
+        public void onSlide(@NonNull View topSheet, float slideOffset, @Nullable Boolean isOpening) {
         }
     };
 
