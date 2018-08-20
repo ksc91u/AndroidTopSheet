@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset, Boolean isOpening) {
                 Log.d("TAG", "slideOffset: " + slideOffset);
-                Log.d("TAG", "isOpening: " + isOpening);
+                Log.d("TAG", "can be nullable isOpening: " + isOpening);
             }
         });
     }
