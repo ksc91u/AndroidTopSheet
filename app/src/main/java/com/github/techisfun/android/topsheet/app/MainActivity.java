@@ -1,9 +1,11 @@
 package com.github.techisfun.android.topsheet.app;
 
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.github.techisfun.android.topsheet.TopSheetBehavior;
@@ -19,7 +21,22 @@ public class MainActivity extends AppCompatActivity {
 
     public void openTopSheet(View v) {
         View sheet = findViewById(R.id.top_sheet);
-        TopSheetBehavior.from(sheet).setState(TopSheetBehavior.STATE_EXPANDED);
+        TopSheetBehavior tt = TopSheetBehavior.from(sheet);
+        tt.setState(TopSheetBehavior.STATE_EXPANDED);
+        tt.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState, Boolean isOpening) {
+                Log.d("TAG", "newState: " + newState);
+                if (isOpening != null) {
+                    Log.d("TAG", "isOpening: " + isOpening);
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                Log.d("TAG", "slideOffset: " + slideOffset);
+            }
+        });
     }
 
     public void openBottomSheet(View v) {

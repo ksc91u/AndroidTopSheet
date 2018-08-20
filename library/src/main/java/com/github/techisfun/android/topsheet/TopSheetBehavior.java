@@ -23,6 +23,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
@@ -62,8 +63,9 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
          * @param newState    The new state. This will be one of {@link #STATE_DRAGGING},
          *                    {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
          *                    {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
+         * @param isOpening   detect showing
          */
-        public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState);
+        public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState, @Nullable Boolean isOpening);
 
         /**
          * Called when the bottom sheet is being dragged.
@@ -523,14 +525,24 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         return mState;
     }
 
+    int oldState = -1;
+
     private void setStateInternal(@State int state) {
+        if (state == TopSheetBehavior.STATE_COLLAPSED || state == TopSheetBehavior.STATE_EXPANDED) {
+            oldState = state;
+        }
+
         if (mState == state) {
             return;
         }
         mState = state;
         View bottomSheet = mViewRef.get();
         if (bottomSheet != null && mCallback != null) {
-            mCallback.onStateChanged(bottomSheet, state);
+            Boolean isOpening = null;
+            if (state == TopSheetBehavior.STATE_SETTLING) {
+                isOpening = oldState == TopSheetBehavior.STATE_COLLAPSED;
+            }
+            mCallback.onStateChanged(bottomSheet, state, isOpening);
         }
     }
 
