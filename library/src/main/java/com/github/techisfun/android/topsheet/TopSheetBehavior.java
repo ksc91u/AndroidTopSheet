@@ -63,9 +63,8 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
          * @param newState    The new state. This will be one of {@link #STATE_DRAGGING},
          *                    {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
          *                    {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
-         * @param isOpening   detect showing
          */
-        public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState, @Nullable Boolean isOpening);
+        public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState);
 
         /**
          * Called when the bottom sheet is being dragged.
@@ -73,8 +72,9 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
          * @param bottomSheet The bottom sheet view.
          * @param slideOffset The new offset of this bottom sheet within its range, from 0 to 1
          *                    when it is moving upward, and from 0 to -1 when it moving downward.
+         * @param isOpening   detect opening of dialog
          */
-        public abstract void onSlide(@NonNull View bottomSheet, float slideOffset);
+        public abstract void onSlide(@NonNull View bottomSheet, float slideOffset, @Nullable Boolean isOpening);
     }
 
     /**
@@ -525,7 +525,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         return mState;
     }
 
-    int oldState = -1;
+    int oldState = mState;
 
     private void setStateInternal(@State int state) {
         if (state == TopSheetBehavior.STATE_COLLAPSED || state == TopSheetBehavior.STATE_EXPANDED) {
@@ -538,11 +538,7 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         mState = state;
         View bottomSheet = mViewRef.get();
         if (bottomSheet != null && mCallback != null) {
-            Boolean isOpening = null;
-            if (state == TopSheetBehavior.STATE_SETTLING) {
-                isOpening = oldState == TopSheetBehavior.STATE_COLLAPSED;
-            }
-            mCallback.onStateChanged(bottomSheet, state, isOpening);
+            mCallback.onStateChanged(bottomSheet, state);
         }
     }
 
@@ -668,14 +664,17 @@ public class TopSheetBehavior<V extends View> extends CoordinatorLayout.Behavior
         }
     };
 
+
     private void dispatchOnSlide(int top) {
         View bottomSheet = mViewRef.get();
         if (bottomSheet != null && mCallback != null) {
+            Boolean isOpening = oldState == TopSheetBehavior.STATE_COLLAPSED;
+
             if (top < mMinOffset) {
-                mCallback.onSlide(bottomSheet, (float) (top - mMinOffset) / mPeekHeight);
+                mCallback.onSlide(bottomSheet, (float) (top - mMinOffset) / mPeekHeight, isOpening);
             } else {
                 mCallback.onSlide(bottomSheet,
-                        (float) (top - mMinOffset) / ((mMaxOffset - mMinOffset)));
+                        (float) (top - mMinOffset) / ((mMaxOffset - mMinOffset)), isOpening);
             }
         }
     }

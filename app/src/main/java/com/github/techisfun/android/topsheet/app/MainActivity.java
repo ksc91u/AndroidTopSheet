@@ -25,15 +25,16 @@ public class MainActivity extends AppCompatActivity {
         tt.setState(TopSheetBehavior.STATE_EXPANDED);
         tt.setTopSheetCallback(new TopSheetBehavior.TopSheetCallback() {
             @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState, Boolean isOpening) {
-                if (isOpening != null) {
-                    Log.d("TAG", "isOpening: " + isOpening);
-                }
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
             }
 
             @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            public void onSlide(@NonNull View bottomSheet, float slideOffset, Boolean isOpening) {
                 Log.d("TAG", "slideOffset: " + slideOffset);
+                if (isOpening != null) {
+                    Log.d("TAG", "isOpening: " + isOpening);
+                }
             }
         });
     }
