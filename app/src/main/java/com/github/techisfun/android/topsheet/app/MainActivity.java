@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                Log.d("TAG", "slideOffset: " + slideOffset);
             }
         });
     }
