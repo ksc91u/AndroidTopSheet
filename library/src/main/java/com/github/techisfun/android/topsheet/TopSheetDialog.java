@@ -152,7 +152,7 @@ public class TopSheetDialog extends AppCompatDialog {
         public void onStateChanged(@NonNull View topSheet,
                                    @BottomSheetBehavior.State int newState) {
             if (newState == TopSheetBehavior.STATE_HIDDEN) {
-                dismiss();
+                cancel();
             }
         }
 
